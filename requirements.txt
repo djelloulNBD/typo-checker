@@ -1,0 +1,7 @@
+streamlit
+python-dotenv
+pandas
+requests
+PyPDF2
+python-docx
+toml 

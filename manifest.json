@@ -1,0 +1,11 @@
+{
+    "manifest_version": 3,
+    "name": "Text Extractor and Typos Checker",
+    "version": "1.0",
+    "description": "Extracts all text from the page and checks for typos.",
+    "permissions": ["scripting", "activeTab"],
+    "host_permissions": ["<all_urls>"],
+    "action": {
+      "default_popup": "popup.html"
+    }
+  }
