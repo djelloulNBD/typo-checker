@@ -5,9 +5,10 @@ import PyPDF2
 from docx import Document
 import io
 import toml
+import os
 
 # Load API key from secret.toml
-secrets = toml.load('secret.toml')
+secrets = toml.load('/mount/src/typo-checker/secret.toml')
 API_KEY = secrets.get('openrouter', {}).get('api_key', None)
 
 def make_api_call(prompt, api_key):
