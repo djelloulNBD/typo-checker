@@ -1,14 +1,8 @@
 import streamlit as st
-import requests
+import requests, PyPDF2, io
 import pandas as pd
-import PyPDF2
 from docx import Document
-import io
-import toml
-import os
 
-# Load API key from secret.toml
-secrets = toml.load('secret.toml')
 API_KEY = st.secrets["openrouter"]["api_key"]
 
 def make_api_call(prompt, api_key):
