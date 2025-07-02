@@ -8,8 +8,8 @@ import toml
 import os
 
 # Load API key from secret.toml
-secrets = toml.load('/mount/src/typo-checker/secret.toml')
-API_KEY = secrets.get('openrouter', {}).get('api_key', None)
+secrets = toml.load('secret.toml')
+API_KEY = st.secrets["openrouter"]["api_key"]
 
 def make_api_call(prompt, api_key):
     url = "https://openrouter.ai/api/v1/chat/completions"
