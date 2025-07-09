@@ -5,8 +5,8 @@ from docx import Document
 import os
 
 # Load API key from secret.toml
-secrets = toml.load('secret.toml')
-API_KEY = secrets.get('openrouter', {}).get('api_key', None) # API_KEY = st.secrets["openrouter"]["api_key"]
+#secrets = toml.load('secret.toml')
+#API_KEY = secrets.get('openrouter', {}).get('api_key', None) # API_KEY = st.secrets["openrouter"]["api_key"]'
 
 def get_api_key():
     # Try Streamlit Cloud secrets first
