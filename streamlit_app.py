@@ -1,14 +1,17 @@
 import streamlit as st
-import requests, PyPDF2, io
+import requests, PyPDF2, toml, io
 import pandas as pd
 from docx import Document
 
-API_KEY = st.secrets["openrouter"]["api_key"]
+# Load API key from secret.toml
+secrets = toml.load('secret.toml')
+API_KEY = secrets.get('openrouter', {}).get('api_key', None) # API_KEY = st.secrets["openrouter"]["api_key"]
 
 def make_api_call(prompt, api_key):
     url = "https://openrouter.ai/api/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {api_key}",
+        "authorization": f"Bearer {api_key}",
         "HTTP-Referer": "http://localhost",
         "X-Title": "Typos Streamlit App",
         "Content-Type": "application/json"
@@ -21,10 +24,19 @@ def make_api_call(prompt, api_key):
         ],
         "max_tokens": 4000
     }
+    print(f"API_KEY: {api_key}")
+    print(f"Authorization header: Bearer {api_key!r}")
+    print("Headers:", headers)
+    print("Data:", data)
     response = requests.post(url, headers=headers, json=data)
     result = response.json()
-    print(result)
-    return result["choices"][0]["message"]["content"]
+    print(result)  # Keep for debugging
+    if "choices" in result and result["choices"]:
+        return result["choices"][0]["message"]["content"]
+    elif "error" in result:
+        raise Exception(f"API Error: {result['error'].get('message', result['error'])}")
+    else:
+        raise Exception(f"Unexpected API response: {result}")
 
 def extract_text_from_file(uploaded_file):
     name = uploaded_file.name.lower()
