@@ -2,10 +2,24 @@ import streamlit as st
 import requests, PyPDF2, toml, io
 import pandas as pd
 from docx import Document
+import os
 
 # Load API key from secret.toml
 secrets = toml.load('secret.toml')
 API_KEY = secrets.get('openrouter', {}).get('api_key', None) # API_KEY = st.secrets["openrouter"]["api_key"]
+
+def get_api_key():
+    # Try Streamlit Cloud secrets first
+    if "openrouter" in st.secrets and "api_key" in st.secrets["openrouter"]:
+        return st.secrets["openrouter"]["api_key"]
+    # Fallback to local secret.toml for local development
+    elif os.path.exists("secret.toml"):
+        secrets = toml.load("secret.toml")
+        return secrets.get("openrouter", {}).get("api_key", None)
+    else:
+        return None
+
+API_KEY = get_api_key()
 
 def make_api_call(prompt, api_key):
     url = "https://openrouter.ai/api/v1/chat/completions"
