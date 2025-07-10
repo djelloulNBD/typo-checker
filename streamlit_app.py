@@ -4,15 +4,10 @@ import pandas as pd
 from docx import Document
 import os
 
-# Load API key from secret.toml
-#secrets = toml.load('secret.toml')
-#API_KEY = secrets.get('openrouter', {}).get('api_key', None) # API_KEY = st.secrets["openrouter"]["api_key"]'
-
 def get_api_key():
     # Try Streamlit Cloud secrets first
     if "openrouter" in st.secrets and "api_key" in st.secrets["openrouter"]:
         return st.secrets["openrouter"]["api_key"]
-    # Fallback to local secret.toml for local development
     elif os.path.exists("secret.toml"):
         secrets = toml.load("secret.toml")
         return secrets.get("openrouter", {}).get("api_key", None)
@@ -38,13 +33,8 @@ def make_api_call(prompt, api_key):
         ],
         "max_tokens": 4000
     }
-    print(f"API_KEY: {api_key}")
-    print(f"Authorization header: Bearer {api_key!r}")
-    print("Headers:", headers)
-    print("Data:", data)
     response = requests.post(url, headers=headers, json=data)
     result = response.json()
-    print(result)  # Keep for debugging
     if "choices" in result and result["choices"]:
         return result["choices"][0]["message"]["content"]
     elif "error" in result:
